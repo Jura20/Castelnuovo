@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CastelnuovoUP.Plugins", "CastelnuovoUP.Plugins.csproj", "{17E29AB0-1F54-FFE8-4815-FBB5CC176211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CastelnuovoUP.Editor.Plugins", "CastelnuovoUP.Editor.Plugins.csproj", "{83FAEFEC-C53D-1A8D-55F2-975DDC47BF77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17E29AB0-1F54-FFE8-4815-FBB5CC176211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17E29AB0-1F54-FFE8-4815-FBB5CC176211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17E29AB0-1F54-FFE8-4815-FBB5CC176211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17E29AB0-1F54-FFE8-4815-FBB5CC176211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83FAEFEC-C53D-1A8D-55F2-975DDC47BF77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83FAEFEC-C53D-1A8D-55F2-975DDC47BF77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83FAEFEC-C53D-1A8D-55F2-975DDC47BF77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83FAEFEC-C53D-1A8D-55F2-975DDC47BF77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
