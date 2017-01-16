@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(InteractPlayer))]
 public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private Transform graphics;
+    public Transform GetGraphics()
+    {
+        return graphics;
+    }
 
+    //Movement
     [SerializeField]
     private float moveSpeed = 3f;
     private Vector3 velocity = Vector3.zero;
@@ -16,15 +22,33 @@ public class PlayerController : MonoBehaviour {
 
     //Components
     private Rigidbody rb;
+    private InteractPlayer interactPlayer;
 
-    void Start () {
+    private bool blocked = false; // Avoid moving when in dialog, etc.
+    public bool GetBlocked()
+    {
+        return blocked;
+    }
+    public void SetBlocked(bool value)
+    {
+        blocked = value;
+    }
+
+    void Start ()
+    {
         rb = GetComponent<Rigidbody>();
+        interactPlayer = GetComponent<InteractPlayer>();
 
         if (graphics == null) Debug.LogError("Player graphics not set up.");
     }
 	
-	void Update () {
-        Move();        
+	void Update ()
+    {
+        if (!blocked)
+        {
+            Move();
+            Interact();
+        } 
     }
 
     private void Move()
@@ -53,6 +77,12 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    private void Interact()
+    {
+        if (Input.GetButtonDown("Jump")){
+            interactPlayer.ActivateInteract();
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
