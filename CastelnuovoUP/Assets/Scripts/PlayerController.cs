@@ -47,8 +47,8 @@ public class PlayerController : MonoBehaviour {
         if (!blocked)
         {
             Move();
-            Interact();
-        } 
+        }
+        Interact();
     }
 
     private void Move()

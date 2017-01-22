@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<npcs>
+
+	<npc id="NPC_0">
+		<dialog id="dialog0" minOpinion="0">
+			<line author="NPC_0">Hey you!</line>
+			<line author="NPC_0">Do you have a moment to speak about our lord and saviour Elías?</line>
+			<line author="Player">Are you talking to me?</line>
+			<line author="NPC_0">Yes, you! Elías rules.</line>
+			<line author="Player">
+				<choice opinionMod="50">Praise Elías.</choice>
+				<choice opinionMod="-50">HERESY!</choice>
+			</line>
+		</dialog>
+	</npc>
+
+</npcs>

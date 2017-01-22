@@ -18,8 +18,8 @@ public class InteractPlayer : MonoBehaviour {
         playerGraphics = playerController.GetGraphics();
     }
 
+    //Raycasting
     void FixedUpdate () {
-        //Raycasting
         RaycastHit hit;
         Vector3 direction = playerGraphics.TransformDirection(Vector3.forward);
         if (Physics.Raycast(transform.position, direction, out hit, interactableDistance))
@@ -44,8 +44,18 @@ public class InteractPlayer : MonoBehaviour {
         }
     }
 
+    //Called when we have pressed "Jump" in PlayerController
     public void ActivateInteract()
     {
-        if (interactNPC != null) interactNPC.ActivateInteract();
+        if (interactNPC != null)
+        {
+            playerController.SetBlocked(true);
+            if (!interactNPC.ActivateInteract())
+            {
+                //Dialog ended
+                playerController.SetBlocked(false);
+                interactNPC = null;
+            }
+        }
     }
 }
