@@ -13,6 +13,9 @@ public class DialogUI : MonoBehaviour {
     private Image leftImage;
 
     [SerializeField]
+    private Text[] options;
+
+    [SerializeField]
     private Transform dialogUIRight;
     [SerializeField]
     private Text rightName;
@@ -28,13 +31,20 @@ public class DialogUI : MonoBehaviour {
         get { return dialogStarted; }
     }
     private int currentLine = 0;
-    
-    public void LoadDialog(Dialog _dialog)
+    private float opinionMod = 0f;
+    public float OpinionMod
+    {
+        get { return opinionMod; }
+    }
+
+    public void LoadDialog(Dialog _dialog, float startingOpinion)
     {
         dialog = _dialog;
         dialogStarted = true;
-        Line line = dialog.lines[0];
+        opinionMod = startingOpinion;
 
+        //First dialog line
+        Line line = dialog.lines[0];
         if (line.Author.Equals("Player")) SetupLeftLine(line);
         else SetupRightLine(line);
     }
@@ -42,6 +52,7 @@ public class DialogUI : MonoBehaviour {
     //Returns false if the dialog ends
     public bool NextLine()
     {
+        //Display next line
         currentLine++;
         if(currentLine < dialog.lines.Count )
         {
@@ -58,7 +69,6 @@ public class DialogUI : MonoBehaviour {
         
     }
 
-
     private void SetupLeftLine(Line line)
     {
         dialogUIRight.gameObject.SetActive(false);
@@ -66,15 +76,31 @@ public class DialogUI : MonoBehaviour {
         //Choice
         if (line.choices != null && line.choices.Count > 0)
         {
-
+            leftContent.gameObject.SetActive(false);
+            for(int i=0; i<line.choices.Count; i++)
+            {
+                options[i].gameObject.SetActive(true);
+                options[i].text = "> " + line.choices[i].Text;
+                if (i == 0)
+                {
+                    Button firstButton = options[i].gameObject.GetComponent<Button>();
+                    firstButton.Select();
+                    firstButton.OnSelect(null); //For the highlight to work well (workaround)
+                }
+            }
         }
         //Normal line
         else
         {
+            if(options != null && options.Length > 0)
+            {
+                leftContent.gameObject.SetActive(true);
+                for (int i = 0; i < options.Length; i++)
+                    options[i].gameObject.SetActive(false);
+            }
             leftName.text = line.Author;
             leftContent.text = line.Text;
         }
-
 
         dialogUILeft.gameObject.SetActive(true);
     }
@@ -82,22 +108,12 @@ public class DialogUI : MonoBehaviour {
     private void SetupRightLine(Line line)
     {
         dialogUILeft.gameObject.SetActive(false);
-
-        //Choice
-        if (line.choices != null && line.choices.Count > 0)
-        {
-
-        }
-        //Normal line
-        else
-        {
-            rightName.text = line.Author;
-            rightContent.text = line.Text;
-        }
-
+        
+        rightName.text = line.Author;
+        rightContent.text = line.Text;
+        
         dialogUIRight.gameObject.SetActive(true);
     }
-
 
     public void DisableDialogUI()
     {
@@ -106,5 +122,24 @@ public class DialogUI : MonoBehaviour {
         dialogUILeft.gameObject.SetActive(false);
         dialogUIRight.gameObject.SetActive(false);
     }
+
+
+    public void Option0Clicked()
+    {
+        Line line = dialog.lines[currentLine];
+        opinionMod += line.choices[0].OpinionMod;
+        Debug.Log("OpinionMod in DialogUI: " + opinionMod);
+    }
+    public void Option1Clicked()
+    {
+        Line line = dialog.lines[currentLine];
+        opinionMod += line.choices[1].OpinionMod;
+    }
+    public void Option2Clicked()
+    {
+        Line line = dialog.lines[currentLine];
+        opinionMod += line.choices[2].OpinionMod;
+    }
+
 
 }

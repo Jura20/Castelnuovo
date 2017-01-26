@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class InteractNPC : MonoBehaviour {
 
@@ -8,6 +9,14 @@ public class InteractNPC : MonoBehaviour {
     {
         get { return id; }
     }
+    [SerializeField]
+    private float opinion = 50f;
+    public float Opinion
+    {
+        get { return opinion; }
+        set { opinion = value; }
+    }
+
 
     [SerializeField]
     private Transform interactMarker;
@@ -27,7 +36,7 @@ public class InteractNPC : MonoBehaviour {
     private Transform UI;
 
     //Dialog
-    private Dialog dialog;
+    private List<Dialog> dialogs = new List<Dialog>();
     private DialogUI dialogUI;
 
     private void Start()
@@ -54,11 +63,34 @@ public class InteractNPC : MonoBehaviour {
         switch (typeNPC)
         {
             case 0: //Talker
-                if (!dialogUI.DialogStarted) dialogUI.LoadDialog(dialog);
+                if (!dialogUI.DialogStarted)
+                {
+                    //Decide appropiate dialog for current opinion
+                    Dialog currentDialog = new Dialog();
+                    float diff = 9999999f;
+                    foreach(Dialog d in dialogs)
+                    {
+                        float newDiff = Mathf.Abs(d.MinOpinion - opinion);
+                        if (newDiff < diff)
+                        {
+                            currentDialog = d;
+                            diff = newDiff;
+                        }
+                    }
+                    //Load dialog in dialogUI and show first line
+                    dialogUI.LoadDialog(currentDialog, opinion);
+                }
                 else
                 {
+                    //Load next line
                     bool continues = dialogUI.NextLine();
-                    if (!continues) return false;
+                    if (!continues)
+                    {
+                        //End of dialog
+                        opinion = dialogUI.OpinionMod; //Update NPC opinion
+                        Debug.Log("NPC opinion: " + opinion);
+                        return false;
+                    }
                 }
                 break;
             default:
@@ -73,7 +105,8 @@ public class InteractNPC : MonoBehaviour {
 
     public void AddDialog(Dialog _dialog)
     {
-        dialog = _dialog;
+        //Add dialog
+        dialogs.Add(_dialog);
     }
 
 }
