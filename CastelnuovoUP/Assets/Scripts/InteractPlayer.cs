@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
 public class InteractPlayer : MonoBehaviour {
@@ -12,26 +12,29 @@ public class InteractPlayer : MonoBehaviour {
     private PlayerController playerController;
     private Transform playerGraphics;
 
+    private int interactableMask;
+
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
         playerGraphics = playerController.GetGraphics();
+        
+        interactableMask = LayerMask.GetMask(interactableLayerName);
     }
 
     //Raycasting
     void FixedUpdate () {
+
         RaycastHit hit;
-        Vector3 direction = playerGraphics.TransformDirection(Vector3.forward);
-        if (Physics.Raycast(transform.position, direction, out hit, interactableDistance))
+        if (Physics.Raycast(transform.position, playerGraphics.forward, out hit, interactableDistance, interactableMask))
         {
-            Transform interactInfo = hit.collider.transform.Find("InteractInfo");
-            if(interactInfo != null && LayerMask.LayerToName(interactInfo.gameObject.layer).Equals(interactableLayerName))
+            Debug.Log("Mask");
+            interactNPC = hit.collider.gameObject.GetComponentInChildren<InteractNPC>();
+            if (interactNPC != null)
             {
-                interactNPC = hit.collider.transform.Find("InteractInfo").GetComponent<InteractNPC>();
-                if (interactNPC != null)
-                {
-                    interactNPC.ReceivePlayerInteraction();
-                }
+                Debug.Log("NPC");
+
+                interactNPC.ReceivePlayerInteraction();
             }
         }else
         {
