@@ -13,8 +13,12 @@ public class PlayerController : MonoBehaviour {
 
     //Movement
     [SerializeField]
-    private float moveSpeed = 3f;
-    private Vector3 velocity = Vector3.zero;
+    private float moveSpeed = .1f;
+    public float MoveSpeed
+    {
+        get { return moveSpeed; }
+        set { moveSpeed = value; }
+    }
     [SerializeField]
     private float rotationSpeed = 5f;
     [SerializeField]
@@ -32,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     public void SetBlocked(bool value)
     {
         blocked = value;
+        if (blocked) rb.velocity = Vector3.zero;
     }
 
     void Start ()
@@ -44,27 +49,32 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
     {
-        if (!blocked)
-        {
-            Move();
-        }
         Interact();
     }
 
-    private void Move()
+    private void FixedUpdate()
+    {
+        if (!blocked)
+        {
+            
+            MoveInterpolated();
+        }
+    }
+    
+    private void MoveInterpolated()
     {
         //Input
         float xMov = Input.GetAxis("Horizontal");
         float zMov = Input.GetAxis("Vertical");
         Vector3 movHorizontal = transform.right * xMov;
         Vector3 movVertical = transform.forward * zMov;
-
+        Vector3 velocity = (movHorizontal + movVertical) * moveSpeed;
+        
         //Animation movement
         //...
-        
+
         //Movement
-        velocity = (movHorizontal + movVertical) * moveSpeed;
-        rb.MovePosition(rb.position + velocity * Time.deltaTime);
+        rb.velocity = new Vector3(velocity.x/Time.fixedDeltaTime, 0, velocity.z/Time.fixedDeltaTime);
 
         //Rotation (graphics only)
         if (velocity != Vector3.zero)
@@ -77,15 +87,13 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+
     private void Interact()
     {
-        if (Input.GetButtonDown("Jump")){
+        if (Input.GetButtonDown("Submit")){
             interactPlayer.ActivateInteract();
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer(collidablesLayerName)) velocity = Vector3.zero;
-    }
+
 }

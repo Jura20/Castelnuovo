@@ -88,7 +88,7 @@ public class InteractNPC : MonoBehaviour {
                     {
                         //End of dialog
                         opinion = dialogUI.OpinionMod; //Update NPC opinion
-                        Debug.Log("NPC opinion: " + opinion);
+                        //Debug.Log("NPC opinion: " + opinion);
                         return false;
                     }
                 }

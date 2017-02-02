@@ -128,7 +128,6 @@ public class DialogUI : MonoBehaviour {
     {
         Line line = dialog.lines[currentLine];
         opinionMod += line.choices[0].OpinionMod;
-        Debug.Log("OpinionMod in DialogUI: " + opinionMod);
     }
     public void Option1Clicked()
     {

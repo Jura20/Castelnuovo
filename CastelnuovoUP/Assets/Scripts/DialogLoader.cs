@@ -164,7 +164,7 @@ public class DialogLoader : MonoBehaviour {
         //Find InteractNPC with npcID
         for(int i=0; i<NPCs.Length; i++)
         {
-            if (NPCs[i].Id.Equals(npcID))
+            if (NPCs[i] != null && NPCs[i].Id.Equals(npcID))
             {
                 NPCs[i].AddDialog(dialog);
                 break;
